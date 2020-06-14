@@ -11,24 +11,31 @@ services:
       - ./data/router/etc/letsencrypt:/etc/letsencrypt
     restart: unless-stopped
     depends_on:
-      app:
+      frontend:
         condition: service_healthy
-  db:
-    image: postgres:12.2-alpine
+  frontend:
+    image: ayudadigital/huelladigital-frontend:${tag_frontend}
     environment:
-      POSTGRES_DB: ${DATASOURCE_DBNAME}
-      POSTGRES_USER: ${DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
-    volumes:
-      - ./data/db/var/lib/postgresql/data:/var/lib/postgresql/data
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_DBNAME: ${DATASOURCE_DBNAME}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      PROFILE: ${PROFILE}
+      BASE_URI: ${BASE_URI}
+    ports:
+      - 5000:5000
     restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready --dbname ${DATASOURCE_DBNAME} --username ${DATASOURCE_USERNAME}"]
-      interval: 10s
+      test: ["CMD-SHELL", 'wget -q -O - localhost:5000 --server-response  2>&1 | head -n 1 | grep "^  HTTP/1.1 200 OK" || exit 1']
+      interval: 20s
       timeout: 5s
       retries: 5
-  app:
-    image: ayudadigital/huelladigital:${tag_app}
+      start_period: 5s
+  backend:
+    image: ayudadigital/huelladigital-backend:${tag_backend}
     environment:
       DATASOURCE_URL: ${DATASOURCE_URL}
       DATASOURCE_DBNAME: ${DATASOURCE_DBNAME}
@@ -48,3 +55,17 @@ services:
       timeout: 5s
       retries: 5
       start_period: 40s
+  db:
+    image: postgres:12.2-alpine
+    environment:
+      POSTGRES_DB: ${DATASOURCE_DBNAME}
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+    volumes:
+      - ./data/db/var/lib/postgresql/data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --dbname ${DATASOURCE_DBNAME} --username ${DATASOURCE_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

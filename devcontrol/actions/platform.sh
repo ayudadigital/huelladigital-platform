@@ -3,52 +3,7 @@
 set -e
 
 # Initialize
-cd "$(dirname "$0")/.."
-rootdir=$(pwd)
-
-# @description Operate [start or stop] one platform service or product
-#
-# @example
-#   operateItem service jenkins start
-#   operateItem product webapp stop
-#
-# @arg $1 Type of item: "platform" or "service"
-# @arg $2 Name of the item, like "jenkins" or "webapp"
-# @art $3 Action to perform with the item: start, stop, destroy
-#
-# @exitcode 0 operation successsful
-#
-function operateItem() {
-    type=$1
-    item=$2
-    itemAction=$3
-    case ${itemAction} in
-        start)
-            dockerAction="up -d"
-            actionTextPre="Starting"
-            actionTextPost="Started"
-            ;;
-        stop)
-            dockerAction="stop"
-            actionTextPre="Stopping"
-            actionTextPost="Stopped"
-            ;;
-        destroy)
-            dockerAction="down"
-            actionTextPre="Stopping"
-            actionTextPost="Stopped"
-            ;;
-        *)
-            echo "Unknown item action ${itemAction}"
-            exit 1
-            ;;
-    esac
-    cd "${rootdir}/${type}s/${item}" || exit 1
-    echo "## ${actionTextPre} platform ${type} '${item}'"
-    eval "docker-compose ${dockerAction}"
-    echo "## ${actionTextPost} platform ${type} '${item}'"
-    echo
-}
+cd "$(dirname "$0")/../.."
 
 # @description Operate [start, stop, destroy] all services and products
 #
@@ -68,17 +23,17 @@ function platform() {
     local briefMessage
     local helpMessage
 
-    briefMessage="Operate [start, stop or destroy] all platform services and products"
+    briefMessage="Operate [start, stop or destroy] all platform services"
     helpMessage=$(cat <<EOF
-Start, stop or destroy all platform services and products from the [config.ini] file
+Start, stop or destroy all platform services
 
 Usage:
 
-$ devcontrol start # Will start all
+$ devcontrol start # Will start all services
 
 [...]
 
-$ devcontrol stop # Will stop all
+$ devcontrol stop # Will stop all services
 
 [...]
 
@@ -86,15 +41,6 @@ $ devcontrol destroy # Will remove all related platform items: containers, netwo
 
 [...]
 
-The action will read the [config.ini] file and then it will start or stop:
-
-- All platform services from the "services" config key
-- All platform products from the "products" config key
-
-In both cases each service or product will be started or stopped sequentially in the same order that it appears in the corresponding config key
-
-Platform services list: ${services[*]}
-Platform products list: ${products[*]}
 EOF
 )
     # Task choosing
@@ -121,17 +67,14 @@ EOF
                     # Cleanup
                     echo "# Cleanup (void)"
                     ;;
-                start|stop|destroy)
-                    echo "# Doing [${platformAction}] over the services: ${services[*]}"
-                    echo
-                    for service in ${services[*]}; do
-                        operateItem service "${service}" "${platformAction}"
-                    done
-                    echo "# Doing [${platformAction}] over the products: ${products[*]}"
-                    echo
-                    for product in ${products[*]}; do
-                        operateItem product "${product}" "${platformAction}"
-                    done
+                start)
+                    docker-compose up -d
+                    ;;
+                stop)
+                    docker-compose stop
+                    ;;
+                destroy)
+                    docker-compose down -v
                     ;;
                 *)
                     echo "ERROR - Unknown action [${platformAction}], use [start] or [stop]"

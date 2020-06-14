@@ -27,8 +27,6 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
       PROFILE: ${PROFILE}
       BASE_URI: ${BASE_URI}
-    ports:
-      - 5000:5000
     restart: unless-stopped
     depends_on:
       backend:
@@ -38,6 +36,9 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+    volumes:
+      - ./services/frontend/entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: ["/entrypoint.sh"]
   backend:
     image: ayudadigital/huelladigital-backend:${tag_backend}
     environment:
@@ -47,8 +48,6 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
       PROFILE: ${PROFILE}
       BASE_URI: ${BASE_URI}
-    ports:
-      - 8080:8080
     restart: unless-stopped
     depends_on:
       db:

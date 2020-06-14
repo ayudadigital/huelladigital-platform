@@ -24,6 +24,15 @@ pipeline {
                 }
             }
         }
+        stage("Remote deploy") {
+            agent { label 'docker' }
+            when { branch 'develop' }
+            steps {
+                sshagent (credentials: ['jpl-ssh-credentials']) {
+                    sh "bin/deploy.sh dev"
+                }
+            }
+        }
         stage('Make release') {
             when { expression { cfg.BRANCH_NAME.startsWith('release/new') } }
             steps {

@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.0 (2020-06-14)
+
+### Changes
+
+#### Upgrade
+
+* Review router config and add remote deploy stage (#2) ([ac1d8c2](https://github.com/ayudadigital/huelladigital-platform/commit/ac1d8c2))
+
+#### Build
+
+* Update Auto Release Log adding v0.2.0 info with JPL ([4be4ded](https://github.com/ayudadigital/huelladigital-platform/commit/4be4ded))
+
+#### Docs
+
+* Generate v0.1.0 changelog with JPL ([f492572](https://github.com/ayudadigital/huelladigital-platform/commit/f492572))
+
+### Authors
+
+* Pedro Amador Rodríguez
+
 ## v0.1.0 (2020-06-14)
 
 ### Changes

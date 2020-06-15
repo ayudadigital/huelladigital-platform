@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H/5 * * * *')
+    }
+
+    stages {
+        stage ('Smoke tests') {
+            steps  {
+                sh '''
+                    CODE=$(curl -o -I -L -s -w "%{http_code}" https://dev.huelladigital.ayudadigital.org/actuator/health 2>/dev/null)
+                    echo "Service status code: $CODE"
+                    if [[ ! -z "$CODE" && "$CODE" -ne 200 ]]; then
+                        exit 1
+                    fi
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                if (currentBuild.previousBuild.result == 'FAILURE') {
+                    withCredentials([string(credentialsId: 'huellapositiva-telegram-bot-token', variable: 'BOT_TOKEN'),
+                                     string(credentialsId: 'huellapositiva-ci-telegram-channel-id', variable: 'CHAT_ID')]) {
+                        sh '''
+                            TEXT="DEV environment is UP."
+                            curl -H 'Content-Type: application/json' -d '{"chat_id":"'"$CHAT_ID"'","text":"'"$TEXT"'"}' https://api.telegram.org/bot$BOT_TOKEN/sendMessage
+                        '''
+                    }
+                }
+            }
+        }
+        failure {
+            script {
+                if (currentBuild.previousBuild.result == 'SUCCESS') {
+                    withCredentials([string(credentialsId: 'huellapositiva-telegram-bot-token', variable: 'BOT_TOKEN'),
+                                     string(credentialsId: 'huellapositiva-ci-telegram-channel-id', variable: 'CHAT_ID')]) {
+                        sh '''
+                            TEXT="DEV environment is DOWN."
+                            curl -H 'Content-Type: application/json' -d '{"chat_id":"'"$CHAT_ID"'","text":"'"$TEXT"'"}' https://api.telegram.org/bot$BOT_TOKEN/sendMessage
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    options {
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr:'100', daysToKeepStr: '7'))
+        disableConcurrentBuilds()
+    }
+}

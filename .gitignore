@@ -2,3 +2,7 @@
 /data/db/*
 /data/router/etc/letsencrypt/*
 /data/router/usr/local/etc/haproxy/certs
+
+# IntelliJ
+.idea
+*.iml

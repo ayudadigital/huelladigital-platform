@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.0.0 (2020-06-21)
+
+### Changes
+
+#### Breaking
+
+* Add git secret feature (#5) ([a1a4ce3](https://github.com/ayudadigital/huelladigital-platform/commit/a1a4ce3))
+
+#### New
+
+* Add health check job for frontend dev environment (#4) ([4c1ae1a](https://github.com/ayudadigital/huelladigital-platform/commit/4c1ae1a))
+* Add dev observability script ([b387b24](https://github.com/ayudadigital/huelladigital-platform/commit/b387b24))
+
+#### Build
+
+* Update Auto Release Log adding v1.0.0 info with JPL ([2892dd9](https://github.com/ayudadigital/huelladigital-platform/commit/2892dd9))
+
+#### Docs
+
+* Generate v0.2.0 changelog with JPL ([4108cb6](https://github.com/ayudadigital/huelladigital-platform/commit/4108cb6))
+
+### Authors
+
+* Ibai
+* Pedro Amador Rodríguez
+* Pedro Amador
+
 ## v0.2.0 (2020-06-14)
 
 ### Changes

@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    cp .env.dist .env
+                    cp vault/.env.local .env
                     devcontrol run-bash-linter
                     """
                 }

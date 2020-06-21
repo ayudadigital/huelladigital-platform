@@ -24,6 +24,7 @@ function run-bash-linter() {
 Run shellckheck test over the following scripts:
 
 * devcontrol/*/*.sh
+* vault/*.sh
 EOF
 )
 
@@ -37,10 +38,10 @@ EOF
             ;;
         exec)
             exitCode=0
-            for file in devcontrol/*/*.sh; do
+            for file in bin/*.sh devcontrol/*/*.sh vault/*.sh; do
                 echo -n "Running shellcheck bash linter over ${file}..."
                 failed=0
-                docker run --network none -i --rm --workdir /workspace -v "$(pwd)":/workspace koalaman/shellcheck-alpine shellcheck -x "${file}" -e "SC2086" || failed=1
+                docker run --network none -i --rm --workdir /workspace -v "$(pwd)":/workspace koalaman/shellcheck-alpine shellcheck -x "${file}"  || failed=1
                 if [ ${failed} -eq 0 ]; then
                     echo "[OK]"
                 else

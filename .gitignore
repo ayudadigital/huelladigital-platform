@@ -2,7 +2,14 @@
 /data/db/*
 /data/router/etc/letsencrypt/*
 /data/router/usr/local/etc/haproxy/certs
+
+# git-secret
 .gitsecret/keys/random_seed
 !*.secret
 /vault/.env.dev
 /vault/*.asc
+
+# IntelliJ
+.idea
+*.iml
+

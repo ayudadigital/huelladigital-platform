@@ -55,7 +55,7 @@ pipeline {
             }
         }
         stage('Make release') {
-            when { expression { cfg.BRANCH_NAME.startsWith('release/new') } }
+            when { branch 'release/new' }
             steps {
                 jplMakeRelease(cfg, true)
                 deleteDir()

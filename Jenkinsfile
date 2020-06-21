@@ -24,12 +24,33 @@ pipeline {
                 }
             }
         }
+
         stage("Remote deploy") {
-            agent { label 'docker' }
             when { branch 'develop' }
+            environment {
+                KEY = credentials('huelladigital-platform-vault-key')
+            }
+            agent {
+                docker {
+                    image 'ayudadigital/gp-jenkins'
+                    label 'docker'
+                    args '--entrypoint=""'
+                }
+            }
             steps {
                 sshagent (credentials: ['jpl-ssh-credentials']) {
-                    sh "bin/deploy.sh dev"
+                    sh """
+                    set +x
+                    export HOME=/tmp
+                    echo $KEY | tr ',' '\n' | gpg --import
+                    git-secret reveal
+                    bin/deploy.sh dev
+                    """
+                }
+            }
+            post {
+                cleanup {
+                    fileOperations([fileDeleteOperation(includes: 'vault/.env.dev')])
                 }
             }
         }

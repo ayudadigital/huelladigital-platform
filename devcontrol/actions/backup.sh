@@ -3,7 +3,7 @@
 set -e
 
 # Initialize
-cd "$(dirname $0)"/../.. || exit 1
+cd "$(dirname "$0")"/../.. || exit 1
 
 # @description Do backup of all docker containers (products and services) and all docker volumes
 #

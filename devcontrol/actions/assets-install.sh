@@ -54,11 +54,11 @@ EOF
                 tempdir=$(mktemp -d)
                 openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
                     -subj "/C=ES/ST=Ayudadigital/L=Huelladigital/O=Dis/CN=${devDomain}" \
-                    -keyout ${tempdir}/${devDomain}.key -out ${tempdir}/${devDomain}.cert
-                cat ${tempdir}/${devDomain}.* >${tempdir}/${devDomain}.pem
-                cp -n ${tempdir}/${devDomain}.pem ${CERTFILE}
-                rm -f ${tempdir}/${devDomain}.*
-                rmdir ${tempdir}
+                    -keyout "${tempdir}/${devDomain}.key" -out "${tempdir}/${devDomain}.cert"
+                cat "${tempdir}"/${devDomain}.* > "${tempdir}/${devDomain}.pem"
+                cp -n "${tempdir}/${devDomain}.pem" "${CERTFILE}"
+                rm -f "${tempdir}"/${devDomain}.*
+                rmdir "${tempdir}"
             fi
             ;;
         *)

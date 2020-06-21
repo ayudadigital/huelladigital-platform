@@ -11,25 +11,26 @@ case $env in
 esac
 
 # Check env file
-if [ ! -f vault/.env.${env} ]; then
+if [ ! -f "vault/.env.${env}" ]; then
     echo "The env file vault/.env.${env} does not exist. Aborting"
     exit 1
 fi
 
 # Copy and remove env file
-rsync --remove-source-files -avpP -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" vault/.env.${env} master@${env}.huelladigital.ayudadigital.org:~/huelladigital-platform/.env
+rsync --remove-source-files -avpP -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" "vault/.env.${env}" "master@${env}.huelladigital.ayudadigital.org:~/huelladigital-platform/.env"
 
 # Remote deploy
+stashMessage="Deploy $(date '+%Y-%M-%d %H:%M:%S')"
 echo """
 set -eu
 set -o pipefail
 cd huelladigital-platform
 git --no-pager diff
-git stash save "Deploy $(date '+%Y-%M-%d %H:%M:%S')"
+git stash save ${stashMessage}
 git checkout ${TARGET_BRANCH}
 git fetch -pv
 git pull
 docker-compose pull
 docker-compose restart
 exit 0
-""" | ssh -t -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no master@${env}.huelladigital.ayudadigital.org bash -
+""" | ssh -t -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "master@${env}.huelladigital.ayudadigital.org" bash -

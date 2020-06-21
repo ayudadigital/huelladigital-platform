@@ -43,7 +43,7 @@ EOF
             ;;
         exec)
             echo "# Create keys"
-            docker run --rm -u $(id -u):$(id -g) --entrypoint="" -v "$(pwd)/vault:/vault" ayudadigital/gp-jenkins \
+            docker run --rm -u "$(id -u):$(id -g)" --entrypoint="" -v "$(pwd)/vault:/vault" ayudadigital/gp-jenkins \
                    bash -c /vault/docker-build-jenkins-gpg-key.sh
             ;;
         *)

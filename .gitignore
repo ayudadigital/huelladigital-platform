@@ -2,3 +2,7 @@
 /data/db/*
 /data/router/etc/letsencrypt/*
 /data/router/usr/local/etc/haproxy/certs
+.gitsecret/keys/random_seed
+!*.secret
+/vault/.env.dev
+/vault/*.asc

@@ -3,7 +3,7 @@
 ## Introducción
 
 Utilizaremos [git-secret](https://git-secret.io/) para gestionar los secretos de la plataforma.
-Los secretos están repositados en el proyecto dentro del directorio `vault`, omo archivos `.env.*.secret`
+Los secretos están repositados en el proyecto dentro del directorio `vault` como archivos `.env.*.secret`
 
 ```console
 $ ls -l vault/.env.*.secret
@@ -28,7 +28,7 @@ gpg: Total number processed: 1
 gpg:               imported: 1
 ```
 
-Añadimos la nueva identidad a los autorizados de git-secret y re-encriptamos
+Añadimos la nueva identidad a los autorizados de git-secret y re-encriptamos los secretos
 
 ```shell
 $ git secret tell huelladigital-platform@jenkins.ayudadigital.org
@@ -52,6 +52,10 @@ Changes not staged for commit:
 	modified:   .gitsecret/keys/pubring.kbx
 	modified:   .gitsecret/keys/pubring.kbx~
 	modified:   vault/.env.dev.secret
+$ git commit ...
+[...]
+$ git push
+[...]
 ```
 
 ## Clave privada
@@ -60,7 +64,7 @@ Añadimos la clave `vault/private.asc` como una credencial de tipo "Secret text"
 
 Toda la clave debe debe estar en una sola línea, usaremos `cat vault/private.asc|tr '\n' ','` para cambiar los saltos de línea por una coma. El texto resultante lo usaremos en la credencial de Jenkins
 
-Ejemplo
+Ejemplo:
 
 ```console
 $ cat vault/private.asc |tr '\n' ','

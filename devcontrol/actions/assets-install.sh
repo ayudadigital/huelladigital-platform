@@ -45,7 +45,7 @@ EOF
             umask 0000
             mkdir -p data/db data/router/etc/letsencrypt
             umask "${SAVE_UMASK}"
-            cp -n .env.dist .env || true
+            cp -n vault/.env.local .env || true
             source .env
             devDomain="dev.huelladigital.ayudadigital.org"
             CERTFILE="data/router/usr/local/etc/haproxy/certs/${devDomain}.pem"

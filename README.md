@@ -18,15 +18,23 @@ Usaremos Ubuntu 18.04 como sistema base
   $ sudo ufw allow 22
   $ sudo ufw allow 80
   $ sudo ufw allow 443
-  $ sudo ufw allow 8080
   $ sudo ufw enable
-  ```
+  $ sudo ufw status
+  Status: active
 
-[...]
+  To                         Action      From
+  --                         ------      ----
+  22                         ALLOW       Anywhere
+  80                         ALLOW       Anywhere
+  443                        ALLOW       Anywhere
+  22 (v6)                    ALLOW       Anywhere (v6)
+  80 (v6)                    ALLOW       Anywhere (v6)
+  443 (v6)                   ALLOW       Anywhere (v6)
+  ```
 
 ## Ciclo de vida
 
-- Preparar archivo `.env`, tomando `.env.dist` como semilla. Por defecto está configurado el entorno de desarrollo local
+- Preparar archivo de entorno `vault/.env.[ENTORNO]`, tomando `vault/.env.local` como semilla
 
   ```console
   $ cat .env
@@ -34,7 +42,7 @@ Usaremos Ubuntu 18.04 como sistema base
   DATASOURCE_URL=jdbc:postgresql://db:5432/huelladigital
   DATASOURCE_DBNAME=huelladigital
   DATASOURCE_USERNAME=huelladigital_user
-  DATASOURCE_PASSWORD=huelladigital_password
+  DATASOURCE_PASSWORD=[CHANGEME]
   # app version
   tag_app=beta
   # App url

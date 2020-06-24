@@ -48,6 +48,8 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
       PROFILE: ${PROFILE}
       BASE_URI: ${BASE_URI}
+      SIGNATURE_SECRET: ${SIGNATURE_SECRET}
+      ENCRYPTION_SECRET: ${ENCRYPTION_SECRET}
     restart: unless-stopped
     depends_on:
       db:

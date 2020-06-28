@@ -23,7 +23,9 @@ function run-bash-linter() {
     helpMessage=$(cat <<EOF
 Run shellckheck test over the following scripts:
 
+* bin/*.sh
 * devcontrol/*/*.sh
+* test/owasp/*.sh
 * vault/*.sh
 EOF
 )
@@ -38,7 +40,7 @@ EOF
             ;;
         exec)
             exitCode=0
-            for file in bin/*.sh devcontrol/*/*.sh vault/*.sh; do
+            for file in bin/*.sh devcontrol/*/*.sh test/owasp/*.sh vault/*.sh; do
                 echo -n "Running shellcheck bash linter over ${file}..."
                 failed=0
                 docker run --network none -i --rm --workdir /workspace -v "$(pwd)":/workspace koalaman/shellcheck-alpine shellcheck -x "${file}"  || failed=1

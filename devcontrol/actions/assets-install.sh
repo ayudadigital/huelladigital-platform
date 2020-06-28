@@ -43,9 +43,9 @@ EOF
             echo "# Create data directories"
             SAVE_UMASK=$(umask)
             umask 0000
-            mkdir -p data/db data/router/etc/letsencrypt
+            mkdir -p data/db data/router/etc/letsencrypt data/router/usr/local/etc/haproxy/certs/
             umask "${SAVE_UMASK}"
-            cp -n vault/.env.local .env || true
+            [ -f .env ] || cp -f vault/.env.local .env
             source .env
             devDomain="dev.huelladigital.ayudadigital.org"
             CERTFILE="data/router/usr/local/etc/haproxy/certs/${devDomain}.pem"
@@ -56,7 +56,7 @@ EOF
                     -subj "/C=ES/ST=Ayudadigital/L=Huelladigital/O=Dis/CN=${devDomain}" \
                     -keyout "${tempdir}/${devDomain}.key" -out "${tempdir}/${devDomain}.cert"
                 cat "${tempdir}"/${devDomain}.* > "${tempdir}/${devDomain}.pem"
-                cp -n "${tempdir}/${devDomain}.pem" "${CERTFILE}"
+                [ -f "${CERTFILE}" ] || cp -f "${tempdir}/${devDomain}.pem" "${CERTFILE}"
                 rm -f "${tempdir}"/${devDomain}.*
                 rmdir "${tempdir}"
             fi

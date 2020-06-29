@@ -33,7 +33,7 @@ pipeline {
                     publishHTML (target : [allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'reports',
+                        reportDir: '.',
                         reportFiles: 'activescan-report.html',
                         reportName: 'OWASP ZAP ActiveScan',
                         reportTitles: 'OWASP ZAP ActiveScan'])

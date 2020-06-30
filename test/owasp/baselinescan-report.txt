@@ -60,13 +60,13 @@ WARN-NEW: X-Content-Type-Options Header Missing [10021] x 11
 	https://router/robots.txt (200 OK)
 	https://router/sitemap.xml (200 OK)
 	https://router (200 OK)
-	https://router/favicon.ico (200 OK)
+	https://router/logo192.png (200 OK)
 WARN-NEW: Strict-Transport-Security Header Not Set [10035] x 11 
 	https://router/ (200 OK)
 	https://router/robots.txt (200 OK)
 	https://router/sitemap.xml (200 OK)
 	https://router (200 OK)
-	https://router/favicon.ico (200 OK)
+	https://router/logo192.png (200 OK)
 WARN-NEW: Content Security Policy (CSP) Header Not Set [10038] x 3 
 	https://router/ (200 OK)
 	https://router/sitemap.xml (200 OK)

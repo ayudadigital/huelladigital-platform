@@ -16,15 +16,30 @@ pipeline {
         }
         stage ('Bash linter') {
             steps {
-                script {
-                    sh """
-                    cp vault/.env.local .env
-                    devcontrol run-bash-linter
-                    """
+                sh """
+                cp vault/.env.local .env
+                devcontrol run-bash-linter
+                """
+            }
+        }
+        stage ('OWASP tests') {
+            steps {
+                sh "devcontrol owasp-tests"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'activescan-report.html', fingerprint: true, allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'baselinescan-report.txt', fingerprint: true, allowEmptyArchive: true
+                    publishHTML (target : [allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: '.',
+                        reportFiles: 'activescan-report.html',
+                        reportName: 'OWASP ZAP ActiveScan',
+                        reportTitles: 'OWASP ZAP ActiveScan'])
                 }
             }
         }
-
         stage("Remote deploy") {
             when { branch 'develop' }
             environment {

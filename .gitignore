@@ -13,3 +13,9 @@
 .idea
 *.iml
 
+# MacOS
+.DS_Store
+
+# Owasp temporal reports
+/activescan-report.html
+/baselinescan-report.txt

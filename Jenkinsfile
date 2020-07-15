@@ -22,6 +22,7 @@ pipeline {
                 """
             }
         }
+        /* Disabled because diff method of check does not work
         stage ('OWASP tests') {
             steps {
                 sh "devcontrol owasp-tests"
@@ -40,6 +41,7 @@ pipeline {
                 }
             }
         }
+        */
         stage("Remote deploy") {
             when { branch 'develop' }
             environment {

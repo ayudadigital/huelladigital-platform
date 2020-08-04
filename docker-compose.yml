@@ -50,6 +50,8 @@ services:
       BASE_URI: ${BASE_URI}
       SIGNATURE_SECRET: ${SIGNATURE_SECRET}
       ENCRYPTION_SECRET: ${ENCRYPTION_SECRET}
+      WEBADMIN_EMAIL: ${WEBADMIN_EMAIL}
+      WEBADMIN_PASSWORD: ${WEBADMIN_PASSWORD}
     restart: unless-stopped
     depends_on:
       db:

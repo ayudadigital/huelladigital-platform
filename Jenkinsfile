@@ -5,6 +5,9 @@
 // Initialize global config
 cfg = jplConfig('huelladigital-platform', 'platform', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
 
+// Disable commit message validation
+cfg.commitValidation.enabled = false
+
 pipeline {
     agent { label 'docker' }
 

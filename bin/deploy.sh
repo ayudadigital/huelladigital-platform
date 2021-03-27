@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # Get target branch
 env=$1
 case $env in

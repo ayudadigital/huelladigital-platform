@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/ayudadigital/jenkins-pipeline-library@v5.0.0') _
+@Library('github.com/ayudadigital/jenkins-pipeline-library@v6.1.0') _
 
 // Initialize global config
 cfg = jplConfig('huelladigital-platform', 'platform', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
@@ -54,18 +54,18 @@ pipeline {
                 docker {
                     image 'ayudadigital/gp-jenkins'
                     label 'docker'
-                    args '--entrypoint=""'
+                    args '--entrypoint="" -v /etc/passwd:/etc/passwd:ro'
                 }
             }
             steps {
                 sshagent (credentials: ['jpl-ssh-credentials']) {
-                    sh """
+                    sh '''
                     set +x
                     export HOME=/tmp
                     echo $KEY | tr ',' '\n' | gpg --import
                     git-secret reveal
                     bin/deploy.sh dev
-                    """
+                    '''
                 }
             }
             post {
